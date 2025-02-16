@@ -10,10 +10,10 @@
 #include "stm32mp15xd.dtsi"
 #include "stm32mp157-pinctrl.dtsi"
 #include "stm32mp15xxac-pinctrl.dtsi"
-#include "stm32mp15xx-100ask.dtsi"
+#include "stm32mp15xx-onedots.dtsi"
 
 / {
-	model = "100ASK ASK-STM32MP157-512D PRO V1 Board";
+	model = "OneDots STM32MP157-512D PRO V1 Board";
 	compatible = "st,stm32mp157c-100ask-512d-v1", "st,stm32mp157";
 
 	aliases {
