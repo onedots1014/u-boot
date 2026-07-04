@@ -21,27 +21,12 @@
 		st,fastboot-gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
 		st,stm32prog-gpios = <&gpioa 14 GPIO_ACTIVE_LOW>;
 	};
-
 	led {
 		red {
 			label = "error";
 			gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
 			default-state = "off";
 			status = "okay";
-		};
-	};
-
-	firmware {
-		optee {
-			compatible = "linaro,optee-tz";
-			method = "smc";
-		};
-	};
-
-	reserved-memory {
-		optee@de000000 {
-			reg = <0xde000000 0x02000000>;
-			no-map;
 		};
 	};
 };
