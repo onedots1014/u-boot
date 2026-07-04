@@ -30,20 +30,6 @@
 			status = "okay";
 		};
 	};
-
-	firmware {
-		optee {
-			compatible = "linaro,optee-tz";
-			method = "smc";
-		};
-	};
-
-	reserved-memory {
-		optee@fe000000 {
-			reg = <0xfe000000 0x02000000>;
-			no-map;
-		};
-	};
 };
 
 #ifndef CONFIG_STM32MP1_TRUSTED
