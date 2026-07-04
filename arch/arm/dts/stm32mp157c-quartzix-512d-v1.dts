@@ -10,11 +10,11 @@
 #include "stm32mp15xd.dtsi"
 #include "stm32mp157-pinctrl.dtsi"
 #include "stm32mp15xxac-pinctrl.dtsi"
-#include "stm32mp15xx-onedots.dtsi"
+#include "stm32mp15xx-quartzix.dtsi"
 
 / {
-	model = "OneDots STM32MP157-512D PRO V1 Board";
-	compatible = "st,stm32mp157c-onedots-512d-v1", "st,stm32mp157";
+	model = "Quartzix STM32MP157-512D PRO V1 Board";
+	compatible = "st,stm32mp157c-quartzix-512d-v1", "st,stm32mp157";
 
 	aliases {
 		ethernet0 = &ethernet0;
