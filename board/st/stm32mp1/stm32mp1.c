@@ -755,6 +755,26 @@ int board_init(void)
 	return 0;
 }
 
+/*
+ * The bootfs keeps one extlinux file per boot device,
+ * <boot_device><boot_instance>_extlinux/extlinux.conf, so an SD card and the
+ * eMMC can pass different root= arguments. Point distro boot at it here
+ * rather than in the default environment, so that an environment saved by an
+ * older U-Boot cannot hide the setting.
+ */
+static void board_select_extlinux_conf(void)
+{
+	const char *dev = env_get("boot_device");
+	const char *inst = env_get("boot_instance");
+	char conf[64];
+
+	if (!dev || !inst || strcmp(dev, "mmc"))
+		return;
+
+	snprintf(conf, sizeof(conf), "%s%s_extlinux/extlinux.conf", dev, inst);
+	env_set("boot_syslinux_conf", conf);
+}
+
 int board_late_init(void)
 {
 	char *boot_device, *boot_instance;
@@ -810,6 +830,8 @@ int board_late_init(void)
 	if (boot_device &&
 	    (!strcmp(boot_device, "serial") || !strcmp(boot_device, "usb")))
 		env_set("bootdelay", "0");
+
+	board_select_extlinux_conf();
 
 	/* define dynamic variables for FASTBOOT and ANDROID bootargs*/
 	if (CONFIG_IS_ENABLED(FASTBOOT_FLASH_MMC) &&
