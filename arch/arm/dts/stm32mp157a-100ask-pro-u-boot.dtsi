@@ -1,0 +1,57 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR BSD-3-Clause
+
+#include "stm32mp15-scmi-u-boot.dtsi"
+
+/ {
+	aliases {
+		usb0 = &usbotg_hs;
+	};
+
+	/*
+	 * No dedicated env partition in the current flash layout (fip at
+	 * 0x80000, 2 MiB, then bootfs). env/mmc.c puts the two redundant
+	 * copies at the top of the named partition, i.e. the last 16 KiB of
+	 * "fip"; the FIP itself is ~1.3 MiB. ToDo: give env its own GPT
+	 * partition when the layout is next changed.
+	 */
+	config {
+		u-boot,mmc-env-partition = "fip";
+	};
+};
+
+/*
+ * Take the DDR size from the memory node, not from the DDR controller.
+ * stm32mp1_ddr_size() decodes the size from the ADDRMAP registers, and the
+ * TF-A DDR settings for this board program the same address map as ST's
+ * 2x4Gb (1 GiB) configuration: 3 bank + 10 column + 15 row bits on a
+ * 32-bit bus. U-Boot then believes it has 1 GiB, relocates near 0xfe000000
+ * and the first access there is rejected by the TZC (only 512 MiB is
+ * mapped):
+ *   ERROR:   Illegal access to 0xfdedefb0: FAIL_ID = 0x4a0 Non-Secure Read
+ * With no RAM device, dram_init() falls back to the memory node.
+ */
+&ddr {
+	status = "disabled";
+};
+
+/*
+ * No Type-C controller is described for the OTG port, so without this dwc2
+ * leaves the role to the ID / VBUS detectors (GGPIO IDEN, VBDEN) and the
+ * gadget did not enumerate: STM32CubeProgrammer hung at "Reconnecting the
+ * device". U-Boot only uses this port as a device (DFU / stm32prog), so
+ * force device mode and a valid B-session, as stm32mp157a-dk1-u-boot.dtsi
+ * does.
+ */
+&usbotg_hs {
+	u-boot,force-b-session-valid;
+};
+
+&uart4_pins_100ask {
+	bootph-all;
+	pins1 {
+		bootph-all;
+	};
+	pins2 {
+		bootph-all;
+	};
+};

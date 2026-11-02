@@ -1286,6 +1286,7 @@ dtb-$(CONFIG_STM32MP13X) += \
 	stm32mp135f-dk.dtb
 
 dtb-$(CONFIG_STM32MP15X) += \
+	stm32mp157a-100ask-pro.dtb \
 	stm32mp157a-dk1.dtb \
 	stm32mp157a-ed1.dtb \
 	stm32mp157a-ev1.dtb \
